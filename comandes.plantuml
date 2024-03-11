@@ -1,0 +1,78 @@
+@startuml
+
+class Client {
+    - id: int
+    - nom: String
+    - adreca: String
+    - telefon: String
+    - email: String
+    + addUsuariWeb(login: String, password: String)
+    + addComptePagament()
+}
+
+class UsuariWeb {
+    - id: int
+    - login: String
+    - password: String
+    - estat: String
+    - carros: List<Carro>
+    + nou()
+    + actiu()
+    + bloquejat()
+    + bannejat()
+    + afegirCarro(carro: Carro)
+}
+
+class Carro {
+    - id: int
+    - línies: List<LíniaComanda>
+    - factura: Factura
+    + afegirLíniaComanda(línia: LíniaComanda)
+}
+
+class LíniaComanda {
+    - id: int
+    - producte: Producte
+    - quantitat: int
+    - preu: double
+}
+
+class Producte {
+    - id: int
+    - codi: String
+    - nom: String
+    - proveidor: String
+}
+
+class Factura {
+    - codi: String
+    - adrecaFacturacio: String
+    - dataEmisio: Date
+    - dataTancament: Date
+    - pagament: Pagament
+}
+
+class Pagament {
+    - tipus: String
+    - import: double
+}
+
+class OrdreEnviament {
+    - id: int
+    - dataComanda: Date
+    - dataEnviament: Date
+    - destinacio: String
+    - import: double
+    - estat: String
+}
+
+Client "1" -- "*" UsuariWeb : té
+Client "1" -- "*" ComptePagament : té
+UsuariWeb "0..*" -- "*" Carro : té
+Carro "1" -- "1" Factura : vinculat a
+Carro "1" -- "*" LíniaComanda : té
+LíniaComanda "1" -- "1" Producte : conté
+Factura "1" -- "1" Pagament : té
+Factura "1" -- "*" OrdreEnviament : crea
+
+@enduml
